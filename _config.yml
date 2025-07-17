@@ -4,12 +4,12 @@
 
 # Site
 title: John Jin's Blog
-subtitle: ''
+# subtitle: ''
 description: ''
 keywords:
 author: John Jin
 language: en
-timezone: 'PDT'
+timezone: 'America/Los_Angeles'
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
