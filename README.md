@@ -97,9 +97,11 @@ Site-wide settings (title, author, links, analytics, comments, search) live in `
 ```bash
 yarn install
 yarn dev      # http://localhost:3000
-yarn build    # production build + RSS
+yarn build    # contentlayer generate + production build + RSS
 yarn serve    # serve the production build
 ```
 
-Contentlayer regenerates `app/tag-data.json` and `public/search.json` on dev/build. If you hit a
-stale-cache error after restructuring routes, remove `.contentlayer` and `.next` and rebuild.
+Contentlayer regenerates `app/tag-data.json` and `public/search.json`. Because Next builds with
+Turbopack (which ignores the `withContentlayer` webpack plugin), `yarn build` runs `contentlayer2 build`
+explicitly first. If you hit a stale-cache error after restructuring routes, remove `.contentlayer`
+and `.next` and rebuild.
