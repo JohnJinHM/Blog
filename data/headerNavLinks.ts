@@ -1,9 +1,12 @@
-const headerNavLinks = [
-  { href: '/', title: 'Home' },
-  { href: '/blog', title: 'Blog' },
-  { href: '/tags', title: 'Tags' },
-  { href: '/projects', title: 'Projects' },
-  { href: '/about', title: 'About' },
-]
+import { Route } from './routes'
 
-export default headerNavLinks
+export function navLinks(route: Route) {
+  return [
+    { href: `/${route}`, title: 'Home' },
+    { href: `/${route}/blog`, title: 'Blog' },
+    { href: `/${route}/photos`, title: 'Photos' },
+    { href: `/${route}/tags`, title: 'Tags' },
+  ]
+}
+
+export default navLinks

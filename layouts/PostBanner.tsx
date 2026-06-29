@@ -9,6 +9,7 @@ import PageTitle from '@/components/PageTitle'
 import SectionContainer from '@/components/SectionContainer'
 import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
+import { Route, defaultRoute, isRoute } from '@/data/routes'
 
 interface LayoutProps {
   content: CoreContent<Blog>
@@ -21,11 +22,15 @@ export default function PostMinimal({ content, next, prev, children }: LayoutPro
   const { slug, title, images } = content
   const displayImage =
     images && images.length > 0 ? images[0] : 'https://picsum.photos/seed/picsum/800/400'
+  const route: Route =
+    content.route && content.route !== 'shared' && isRoute(content.route)
+      ? content.route
+      : defaultRoute
 
   return (
     <SectionContainer>
       <ScrollTopAndComment />
-      <article>
+      <article data-route={route} className={`route-${route}`}>
         <div>
           <div className="space-y-1 pb-10 text-center dark:border-gray-700">
             <div className="w-full">

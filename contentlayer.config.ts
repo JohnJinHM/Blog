@@ -60,19 +60,19 @@ const computedFields: ComputedFields = {
 }
 
 /**
- * Count the occurrences of all tags across blog posts and write to json file
+ * Count tag occurrences per route and write to json file.
+ * Posts with route 'shared' count toward both routes.
  */
-async function createTagCount(allBlogs) {
-  const tagCount: Record<string, number> = {}
-  allBlogs.forEach((file) => {
+async function createTagCount(allDocuments) {
+  const tagCount: Record<string, Record<string, number>> = { official: {}, casual: {} }
+  allDocuments.forEach((file) => {
     if (file.tags && (!isProduction || file.draft !== true)) {
+      const routes = file.route === 'shared' ? ['official', 'casual'] : [file.route || 'official']
       file.tags.forEach((tag) => {
         const formattedTag = slug(tag)
-        if (formattedTag in tagCount) {
-          tagCount[formattedTag] += 1
-        } else {
-          tagCount[formattedTag] = 1
-        }
+        routes.forEach((route) => {
+          tagCount[route][formattedTag] = (tagCount[route][formattedTag] || 0) + 1
+        })
       })
     }
   })
@@ -80,14 +80,14 @@ async function createTagCount(allBlogs) {
   writeFileSync('./app/tag-data.json', formatted)
 }
 
-function createSearchIndex(allBlogs) {
+function createSearchIndex(allDocuments) {
   if (
     siteMetadata?.search?.provider === 'kbar' &&
     siteMetadata.search.kbarConfig.searchDocumentsPath
   ) {
     writeFileSync(
       `public/${path.basename(siteMetadata.search.kbarConfig.searchDocumentsPath)}`,
-      JSON.stringify(allCoreContent(sortPosts(allBlogs)))
+      JSON.stringify(allCoreContent(sortPosts(allDocuments)))
     )
     console.log('Local search index generated...')
   }
@@ -109,6 +109,7 @@ export const Blog = defineDocumentType(() => ({
     layout: { type: 'string' },
     bibliography: { type: 'string' },
     canonicalUrl: { type: 'string' },
+    route: { type: 'string', default: 'official' },
   },
   computedFields: {
     ...computedFields,
@@ -122,6 +123,38 @@ export const Blog = defineDocumentType(() => ({
         dateModified: doc.lastmod || doc.date,
         description: doc.summary,
         image: doc.images ? doc.images[0] : siteMetadata.socialBanner,
+        url: `${siteMetadata.siteUrl}/${doc._raw.flattenedPath}`,
+      }),
+    },
+  },
+}))
+
+export const Photo = defineDocumentType(() => ({
+  name: 'Photo',
+  filePathPattern: 'photos/**/*.mdx',
+  contentType: 'mdx',
+  fields: {
+    title: { type: 'string', required: true },
+    date: { type: 'date', required: true },
+    image: { type: 'string', required: true },
+    summary: { type: 'string' },
+    tags: { type: 'list', of: { type: 'string' }, default: [] },
+    lastmod: { type: 'date' },
+    draft: { type: 'boolean' },
+    route: { type: 'string', default: 'official' },
+  },
+  computedFields: {
+    ...computedFields,
+    structuredData: {
+      type: 'json',
+      resolve: (doc) => ({
+        '@context': 'https://schema.org',
+        '@type': 'ImageObject',
+        headline: doc.title,
+        datePublished: doc.date,
+        dateModified: doc.lastmod || doc.date,
+        description: doc.summary,
+        contentUrl: doc.image,
         url: `${siteMetadata.siteUrl}/${doc._raw.flattenedPath}`,
       }),
     },
@@ -149,7 +182,7 @@ export const Authors = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: 'data',
-  documentTypes: [Blog, Authors],
+  documentTypes: [Blog, Photo, Authors],
   mdx: {
     cwd: process.cwd(),
     remarkPlugins: [
@@ -180,8 +213,9 @@ export default makeSource({
     ],
   },
   onSuccess: async (importData) => {
-    const { allBlogs } = await importData()
-    createTagCount(allBlogs)
-    createSearchIndex(allBlogs)
+    const { allBlogs, allPhotos } = await importData()
+    const allDocuments = [...allBlogs, ...allPhotos]
+    createTagCount(allDocuments)
+    createSearchIndex(allDocuments)
   },
 })

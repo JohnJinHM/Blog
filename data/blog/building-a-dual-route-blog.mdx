@@ -1,0 +1,18 @@
+---
+title: 'Building a dual-route blog'
+date: '2026-06-25'
+tags: ['nextjs', 'project']
+draft: false
+summary: 'How this site serves two independent sections — official and casual — from one Next.js app.'
+route: official
+---
+
+The site has two top-level routes, `official` and `casual`, each with its own home, blog, photos, and tags.
+
+A single frontmatter field decides where a post appears:
+
+```yaml
+route: official # or 'casual', or 'shared'
+```
+
+Posts marked `shared` appear under both routes. Tags are counted per route, while search stays global across everything.
