@@ -68,15 +68,6 @@ module.exports = () => {
     basePath,
     reactStrictMode: true,
     trailingSlash: true,
-    turbopack: {
-      root: process.cwd(),
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
-      },
-    },
     pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
     images: {
       remotePatterns: [
