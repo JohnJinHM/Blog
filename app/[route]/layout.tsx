@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { isRoute, routes } from '@/data/routes'
+import RouteTransition from '@/components/home/RouteTransition'
 
 export const generateStaticParams = async () => routes.map((route) => ({ route }))
 
@@ -11,9 +12,5 @@ export default async function RouteLayout(props: {
   if (!isRoute(route)) {
     return notFound()
   }
-  return (
-    <div data-route={route} className={`route-${route}`}>
-      {props.children}
-    </div>
-  )
+  return <RouteTransition>{props.children}</RouteTransition>
 }

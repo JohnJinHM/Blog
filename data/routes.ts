@@ -19,19 +19,23 @@ export function routeFromPathname(pathname: string): Route {
 
 export const routeMeta: Record<
   Route,
-  { label: string; description: string; blogTitle: string; photosTitle: string }
+  { label: string; description: string; blogTitle: string; photosTitle: string; homeIntro: string }
 > = {
   official: {
     label: 'Official',
     description: 'Writing, projects, and work worth keeping on the record.',
     blogTitle: 'Articles',
     photosTitle: 'Photos',
+    homeIntro:
+      'I build software and write about the projects and ideas worth keeping on the record. Here is a short account of the work and roles that shaped me.',
   },
   casual: {
     label: 'Casual',
     description: 'Off-the-cuff notes, snapshots, and everything in between.',
     blogTitle: 'Notes',
     photosTitle: 'Snapshots',
+    homeIntro:
+      'Off the clock, this is where I keep the half-formed notes, snapshots, and side projects. A more relaxed look at what I get up to for fun.',
   },
 }
 

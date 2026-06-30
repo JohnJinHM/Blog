@@ -76,9 +76,25 @@ Lists and homes are sorted newest-first by default.
 
 ## Per-route styling
 
-Every route page (and single post page) is wrapped with a `data-route="official|casual"` attribute
-and a `route-official` / `route-casual` class, so the two routes can be given divergent styles later
-without structural changes. No route-specific styles are defined yet.
+The whole UI (header, content, footer) is wrapped by `RouteAccent`, a client component that derives
+the active route from the pathname and applies a `data-route="official|casual"` attribute and a
+`route-official` / `route-casual` class.
+
+- **Accent color switches per route.** `.route-casual` remaps the `--color-primary-*` scale to
+  `--color-secondary-*` in `css/tailwind.css`, so every `text-primary-*` / `border-primary-*` accent
+  recolors from blue (official) to amber (casual) automatically — no per-component changes.
+- **Route switches animate.** Clicking the header/mobile route toggle (`RouteSwitchLink`) fades the
+  current body out (`@keyframes route-leave`) via `RouteTransitionProvider`, then navigates;
+  `RouteTransition` (in `app/[route]/layout.tsx`) plays the slide/fade-in (`@keyframes route-enter`)
+  for the incoming route.
+
+## Home pages
+
+Both routes share one index layout, `components/home/HomeLayout.tsx`: an author panel up top
+(narrow left column = avatar / name / occupation / socials from `data/authors/default.mdx`; wider
+right column = a route-specific intro plus an experiences list), then recent posts and photos below.
+Route-specific copy lives in `routeMeta[route].homeIntro` (`data/routes.ts`) and
+`experiences[route]` (`data/experiences.ts`) — both ship with placeholders to replace.
 
 ## Key files
 
@@ -86,7 +102,10 @@ without structural changes. No route-specific styles are defined yet.
 - `data/headerNavLinks.ts` — `navLinks(route)` builder for the header/mobile nav.
 - `contentlayer.config.ts` — `Blog` + `Photo` document types, per-route tag counts, search index.
 - `app/[route]/…` — the dynamic route tree (home, blog, photos, tags).
-- `components/home/OfficialHome.tsx`, `CasualHome.tsx` — the two independent index pages.
+- `components/home/HomeLayout.tsx` — the shared index layout for both routes.
+- `components/RouteAccent.tsx` — applies the per-route accent class to the whole UI.
+- `components/RouteTransitionProvider.tsx`, `components/RouteSwitchLink.tsx`, `components/home/RouteTransition.tsx` — route-switch exit/enter animation.
+- `data/experiences.ts` — per-route experiences shown in the home author panel.
 - `layouts/ListLayoutWithTags.tsx`, `ListLayoutPhotos.tsx`, `PhotoLayout.tsx` — list/detail layouts.
 - `components/TagSidebar.tsx`, `Tag.tsx` — route-aware tag UI.
 

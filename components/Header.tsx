@@ -6,6 +6,7 @@ import navLinks from '@/data/headerNavLinks'
 import { otherRoute, routeFromPathname, routeMeta } from '@/data/routes'
 import Logo from '@/data/logo.svg'
 import Link from './Link'
+import RouteSwitchLink from './RouteSwitchLink'
 import MobileNav from './MobileNav'
 import ThemeSwitch from './ThemeSwitch'
 import SearchButton from './SearchButton'
@@ -50,13 +51,13 @@ const Header = () => {
               </Link>
             ))}
         </div>
-        <Link
+        <RouteSwitchLink
           href={`/${next}`}
           className="border-primary-500 text-primary-500 hover:bg-primary-500 hidden rounded-full border px-3 py-1 text-sm font-medium hover:text-white sm:block"
           aria-label={`Switch to ${routeMeta[next].label}`}
         >
           {routeMeta[next].label}
-        </Link>
+        </RouteSwitchLink>
         <SearchButton />
         <ThemeSwitch />
         <MobileNav />
