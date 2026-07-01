@@ -157,7 +157,7 @@ Route-specific copy lives in `routeMeta[route].homeIntro` (`data/routes.ts`) and
 - `components/RouteTransitionProvider.tsx`, `components/RouteSwitchLink.tsx`, `components/home/RouteTransition.tsx` — route-switch exit/enter animation.
 - `data/experiences.ts` — per-route experiences shown in the home author panel.
 - `layouts/ListLayoutWithTags.tsx`, `ListLayoutPhotos.tsx`, `PhotoLayout.tsx` — list/detail layouts.
-- `components/TagSidebar.tsx`, `Tag.tsx` — route-aware tag UI.
+- `components/TagSidebar.tsx`, `Tag.tsx` — route-aware tag UI. The sidebar is opened on demand via a "Tags" button at the top right of list layouts and rendered as a right-side overlay drawer.
 
 Site-wide settings (title, author, links, analytics, comments, search) live in `data/siteMetadata.js`.
 

@@ -5,7 +5,6 @@ export function navLinks(route: Route) {
     { href: `/${route}`, title: 'Home' },
     { href: `/${route}/blog`, title: 'Blog' },
     { href: `/${route}/photos`, title: 'Photos' },
-    { href: `/${route}/tags`, title: 'Tags' },
   ]
 }
 

@@ -126,20 +126,18 @@ export default function ListLayoutPhotos({
 
   return (
     <div>
-      <div className="pt-6 pb-6">
+      <div className="flex items-center justify-between pt-6 pb-6">
         <h1 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:hidden sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 dark:text-gray-100">
           {title}
         </h1>
-      </div>
-      <div className="flex sm:space-x-24">
         <TagSidebar route={route} />
-        <div className="w-full">
-          {displayPhotos.length === 0 && <p>No photos found.</p>}
-          <PhotoGrid photos={displayPhotos} route={route} />
-          {pagination && pagination.totalPages > 1 && (
-            <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
-          )}
-        </div>
+      </div>
+      <div className="w-full">
+        {displayPhotos.length === 0 && <p>No photos found.</p>}
+        <PhotoGrid photos={displayPhotos} route={route} />
+        {pagination && pagination.totalPages > 1 && (
+          <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />
+        )}
       </div>
     </div>
   )
