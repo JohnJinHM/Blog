@@ -13,7 +13,8 @@ export default async function Page(props: { params: Promise<{ route: string }> }
   }
   const posts = allCoreContent(sortPosts(postsForRoute(allBlogs, route as Route)))
   const photos = allCoreContent(sortPosts(postsForRoute(allPhotos, route as Route)))
-  const author = coreContent(allAuthors.find((a) => a.slug === 'default') as Authors)
+  const base = coreContent(allAuthors.find((a) => a.slug === 'default') as Authors)
+  const author = { ...base, avatar: routeMeta[route as Route].avatar }
 
   return (
     <HomeLayout

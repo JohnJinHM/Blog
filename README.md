@@ -141,8 +141,10 @@ the active route from the pathname and applies a `data-route="official|casual"` 
 ## Home pages
 
 Both routes share one index layout, `components/home/HomeLayout.tsx`: an author panel up top
-(narrow left column = avatar / name / occupation / socials from `data/authors/default.mdx`; wider
-right column = a route-specific intro plus an experiences list), then recent posts and photos below.
+(narrow left column = avatar / name / occupation / socials; wider right column = a route-specific
+intro plus an experiences list), then recent posts and photos below. Name / occupation / socials
+come from `data/authors/default.mdx`, but the **avatar is per route** — each route picks its own
+image via `routeMeta[route].avatar` (`data/routes.ts`), so the two homes don't share one avatar.
 Route-specific copy lives in `routeMeta[route].homeIntro` (`data/routes.ts`) and
 `experiences[route]` (`data/experiences.ts`) — both ship with placeholders to replace.
 
