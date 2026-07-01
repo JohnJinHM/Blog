@@ -3,7 +3,7 @@ import { CoreContent } from 'pliny/utils/contentlayer'
 import type { Photo } from 'contentlayer/generated'
 import Comments from '@/components/Comments'
 import Link from '@/components/Link'
-import Image from '@/components/Image'
+import PhotoImage from '@/components/PhotoImage'
 import PageTitle from '@/components/PageTitle'
 import SectionContainer from '@/components/SectionContainer'
 import Tag from '@/components/Tag'
@@ -25,7 +25,8 @@ interface LayoutProps {
 }
 
 export default function PhotoLayout({ content, next, prev, children }: LayoutProps) {
-  const { slug, title, date, image, tags } = content
+  const { slug, title, date, image, imageWidth, imageHeight, imageBlur, imageWidths, tags } =
+    content
   const route: Route = isRoute(content.route ?? '') ? (content.route as Route) : defaultRoute
 
   return (
@@ -42,13 +43,16 @@ export default function PhotoLayout({ content, next, prev, children }: LayoutPro
           </dl>
           <PageTitle>{title}</PageTitle>
         </div>
-        <div className="relative w-full overflow-hidden rounded-md">
-          <Image
+        <div className="overflow-hidden rounded-md">
+          <PhotoImage
             src={image}
             alt={title}
-            width={1200}
-            height={800}
-            className="h-auto w-full object-cover"
+            width={imageWidth}
+            height={imageHeight}
+            blur={imageBlur}
+            widths={imageWidths}
+            priority
+            sizes="(min-width: 1280px) 1024px, (min-width: 768px) 768px, 100vw"
           />
         </div>
         <div className="prose dark:prose-invert max-w-none py-8">{children}</div>

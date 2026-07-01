@@ -5,7 +5,7 @@ import { formatDate } from 'pliny/utils/formatDate'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import type { Photo } from 'contentlayer/generated'
 import Link from '@/components/Link'
-import Image from '@/components/Image'
+import PhotoImage from '@/components/PhotoImage'
 import Tag from '@/components/Tag'
 import TagSidebar from '@/components/TagSidebar'
 import siteMetadata from '@/data/siteMetadata'
@@ -68,19 +68,21 @@ function Pagination({ totalPages, currentPage }: PaginationProps) {
 
 export function PhotoGrid({ photos, route }: { photos: CoreContent<Photo>[]; route: Route }) {
   return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+    <div className="gap-6 sm:columns-2 lg:columns-3">
       {photos.map((photo) => (
         <div
           key={photo.path}
-          className="overflow-hidden rounded-md border-2 border-gray-200/60 dark:border-gray-700/60"
+          className="mb-6 break-inside-avoid overflow-hidden rounded-md border-2 border-gray-200/60 dark:border-gray-700/60"
         >
           <Link href={`/${photo.path}`} aria-label={photo.title}>
-            <Image
+            <PhotoImage
               src={photo.image}
               alt={photo.title}
-              width={544}
-              height={306}
-              className="aspect-video w-full object-cover"
+              width={photo.imageWidth}
+              height={photo.imageHeight}
+              blur={photo.imageBlur}
+              widths={photo.imageWidths}
+              sizes="(min-width: 1024px) 30vw, (min-width: 640px) 46vw, 92vw"
             />
           </Link>
           <div className="p-5">
